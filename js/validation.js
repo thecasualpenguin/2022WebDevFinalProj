@@ -29,7 +29,9 @@ const resetAlert = (ele) => {
 	ele.style.animation = "";
 };
 
-const formAlert = () => {
+const formAlert = (e) => {
+	e.preventDefault();
+	
 	// reset field, then check
 	resetAlert(nameField);
 	if (!nameField.value) {
@@ -48,11 +50,21 @@ const formAlert = () => {
 		invalidAlert(emailField, "Please enter a valid email!");
 		return;
 	}
+
+	// if no problme, then manually submit
+	document.getElementById('signup-form').submit();
+
+
 	// window.location.href = "./thankyou.html";
 	// window.open('./thankyou.html', '_blank');
 	close2Btn = document.getElementById("close2");
-	trigger(close2Btn, "click"); // the most f*cking convoluted way of closing a modal
+	trigger(close2Btn, "click"); // the most f*cking convoluted way of closing a modal 
+	// literally dispatching an event that clicks on the close button 
+	// which triggers the event listener attached to it to actually execute the close operation
+	// clearly, I'm having too much fun. 
 };
 
 console.log(subscribeButton);
 subscribeButton.addEventListener("click", formAlert);
+
+

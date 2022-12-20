@@ -7,11 +7,41 @@
 		<link rel="stylesheet" href="stylesheets/banner.css" defer />
 		<link rel="stylesheet" href="stylesheets/stylizedForm.css" defer />
 		<link rel="stylesheet" href="stylesheets/landing.css" defer />
+		<link rel="stylesheet" href="stylesheets/darkToggle.css" defer />
 		<script src="js/landing.js" defer></script>
+		<script src="js/liveChat.js" defer></script>
 
 		<title>Photography Equipment Exchange</title>
 	</head>
 	<body>
+		<div class="theme-switch-wrapper">
+			<label class="theme-switch" id="toggleTheme" for="checkbox">
+				<input type="checkbox" id="checkbox" />
+				<div class="slider round"></div>
+			</label>
+			<em id="toggleLabel">Toggle Your Theme</em>
+		</div>
+
+		<div id="user-control">
+			<div id="login" class="user-action">
+				<a href="./pages/login.php">Log In</a>
+			</div>
+			<div id="signup" class="user-action">
+				<a href="./pages/login.php">Sign up</a>
+			</div>
+		</div>
+
+
+		<div id="user-control-2">
+			<div id="VIP-indicator" class="user-action"> 
+				<a href="./pages/vip.html">VIP Section</a>
+			</div>
+			<div id="signout" class="user-action">
+				<a href="">Sign Out</a>
+			</div>
+		</div>
+		
+		<div id="clock">synchronizing...</div>
 		<ul class="navbar-list" id="vertical-navbar">
 			<!-- <h2>Photography XChange</h2> -->
 			<!-- <li><a href="./pages/index.html"><span class="nav-item">Home</span></a></li> -->
@@ -33,6 +63,10 @@
 			</li>
 		</ul>
 
+
+
+		<!-- actual content body -->
+
 		<main>
 			<div style="height: '100vh'" id="bannerContainer" class="">
 				<div
@@ -42,6 +76,7 @@
 					<video autoplay muted loop id="landingVideo">
 						<source src="videos/landing.mp4" type="video/mp4" />
 					</video>
+					
 					<div class="title center">Cameras for you</div>
 					<div class="down-arrow center">↓</div>
 				</div>
@@ -88,16 +123,17 @@
 					<div class="contact-us-container">
 						<h1>Contact Us</h1>
 						<div class="contact-us-container-L2">
-							<form id="form" class="contact-us-item">
-								<input id="name" type="text" placeholder="Name" required />
-								<input id="email" type="text" placeholder="Email" required />
+							<form id="form" class="contact-us-item" action="./pages/confirmation.php" method="POST">
+								<input id="name" name="name" type="text" placeholder="Name" required />
+								<input id="email" name="email" type="email" placeholder="Email" required />
 								<textarea
 									id="message"
+									name="message"
 									type="text"
 									placeholder="Message for Us"
 									required
 								></textarea>
-								<input id="submit" type="submit" value="SEND!" />
+								<input id="submit" name="inquiry" type="submit" value="Submit" />
 							</form>
 
 							<section class="contact-us-item">

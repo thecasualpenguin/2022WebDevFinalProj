@@ -1,7 +1,12 @@
+// the actual 'trigger' function
+const trigger = (el, etype, custom) => {
+	const evt = custom ?? new Event(etype, { bubbles: true });
+	el.dispatchEvent(evt);
+};
+
 function isInViewport(element) {
 	// currently only checks top and bottom
 	const rect = element.getBoundingClientRect();
-	console.log(rect);
 	return (
 		(rect.top >= 0 &&
 			rect.top <
@@ -27,7 +32,6 @@ let hideNavbar = function() {
 }
 
 banner = document.getElementById("bannerContainer");
-console.log(banner);
 
 let lastPageOffset = 0;
 
@@ -37,10 +41,9 @@ window.addEventListener("scroll", (event) => {
 			? window.pageYOffset
 			: (document.documentElement || document.body.parentNode || document.body)
 					.scrollTop;
-	console.log(scrollTop);
 
 	let firstSection = document.getElementById("section-1");
-	console.log(isInViewport(firstSection));
+	// console.log(isInViewport(firstSection));
 
 	// deprecated: hides by percentage of offset from landing section
 	// let percentMovedOff = Math.min(Math.abs(firstSection.getBoundingClientRect().top/window.innerHeight), 1)
@@ -50,10 +53,10 @@ window.addEventListener("scroll", (event) => {
 	let idempotency = false;
 
 	if (scrollTop - lastPageOffset > 0) {
-		console.log("scroll down");
+		// console.log("scroll down");
 		hideNavbar();
 	} else {
-		console.log("scroll up");
+		// console.log("scroll up");
 		showNavbar();
 	}
 
@@ -65,19 +68,19 @@ window.addEventListener("click", function (e) {
 	let navbar = document.getElementById("vertical-navbar");
 
 	if (navbar.contains(e.target)) {
-		console.log("inside navbar");
+		// console.log("clicked inside navbar");
 	} else {
-		navbar.style.transform = `translate(-${navbar.offsetWidth}px)`;
-		console.log("outside navbar");
+		// navbar.style.transform = `translate(-${navbar.offsetWidth}px)`;
+		// console.log("clicked outside navbar");
 	}
 });
 
-// currently not working...
+// checks if within the column that contains navbar
 function isWithin(mouseX, mouseY, element) {
 	box = element.getBoundingClientRect()
 	let [x1, x2, y1, y2] = [box.left, box.right, box.top, box.bottom];
 
-	if (mouseX > box.left+200 && mouseX < box.right+200 && mouseY > box.bottom && mouseY < box.top)
+	if (mouseX > 0 && mouseX < Math.abs(box.right-box.left))
 		return true;
 	return false;
 }
@@ -87,9 +90,9 @@ function isWithin(mouseX, mouseY, element) {
 window.addEventListener("mousemove", function(e) {
 	let navbar = document.getElementById("vertical-navbar");
 	if (isWithin(e.clientX, e.clientY, navbar)) {
-		console.log("WITHIN")
+		showNavbar()
 	} else {
-		console.log("OUTSIDE");
+		// hideNavbar()
 	}
 });
 
@@ -105,7 +108,7 @@ let inactivityTime = function () {
 	function resetTimer() {
 		clearTimeout(time);
 		if (window.pageYOffset > 0) // so if we are exactly on landing page, persist menu
-			time = setTimeout(logout, 2000);
+			time = setTimeout(logout, 1500);
 		// 1000 milliseconds = 1 second
 	}
 
@@ -117,4 +120,111 @@ let inactivityTime = function () {
 };
 
 inactivityTime();
+
+// refreshing clock
+clock = document.querySelector('#clock');
+
+setInterval(() => {
+	clock.textContent = new Date().toLocaleString();
+}, 1000);
+
+
+// toggle light/dark mode
+
+toggleTheme = document.querySelector('#toggleTheme');
+
+toggleTheme.addEventListener('change', (e) => {
+
+	document.body.classList.toggle("dark-mode");
+	clock.classList.toggle("dark-mode");
+	
+
+	// get all things to change
+	let toggleLabel = document.getElementById('toggleLabel')
+	let founderPic = document.getElementById('founder-img').querySelector('img')
+	let founderLink = document.getElementById('founder-img')
+	let navbar = document.getElementById("vertical-navbar");
+	let landingVid = document.getElementById('landingVideo');
+	let landingSrc = document.getElementById('landingVideo').querySelector('source');
+
+	let navItems = document.querySelectorAll("li > a");
+	console.log(navItems);
+	
+	if (localStorage.getItem("mode") == 'light') {
+		// if lightmode, change to dark
+		localStorage.setItem("mode", 'dark');
+		toggleLabel.style.color = "white";
+		founderPic.src = "images/founder2.jpg";
+		founderLink.href = "images/founder2.jpg"
+		toggleLabel.style.color = "white";
+		// navbar.classList.add("dark-mode");
+		
+		landingSrc.src = 'videos/landing-dark.mp4';
+		landingVid.pause(); landingVid.load(); landingVid.play();
+		
+		for (let e of navItems) {
+			console.log(e);
+			// e.style.color = "white";
+			// e.style.fontWeight = "300";
+		}
+		
+	} 
+	else {
+		// if darkmode, change to light
+		localStorage.setItem("mode", 'light');
+		
+		founderPic.src = "images/founder.jpg";
+		founderLink.href = "images/founder1.jpg"
+		toggleLabel.style.color = "#222";
+
+		landingSrc.src = 'videos/landing.mp4';
+		landingVid.pause(); landingVid.load(); landingVid.play();
+
+		for (let e of navItems) {
+			console.log(e);
+			// e.style.color = "black";
+			// e.style.fontWeight = "400";
+		}
+		
+	}
+});
+
+// load last preference by default
+
+console.log(localStorage.getItem("mode"));
+
+if (localStorage.getItem("mode") == null) {
+	localStorage.setItem("mode", "light");
+}
+if (localStorage.getItem("mode") == "dark") {
+	// so we must simulate a click on this toggle button when we are currently on "light" mode
+	document.getElementById("checkbox").checked = "True";
+	localStorage.setItem("mode", "light");
+	trigger(toggleTheme, "change");
+}
+
+
+// add dynamic login/signout change
+let userControl = document.getElementById('user-control');
+let userControl2 = document.getElementById('user-control-2');
+if (localStorage.getItem("loggedin") == 1){
+	userControl.style.display = "None";
+} else {
+	userControl2.style.display = "None";
+}
+
+let signout = document.querySelector('#signout a');
+
+signout.addEventListener('click', (e) => {
+	e.preventDefault();
+	localStorage.setItem("loggedin", '0');
+	
+	// swap controls
+	userControl2.style.display = "None";
+	userControl.style.display = "grid";
+	userControl.style.animation = "fadeIn 1.5s"
+
+})
+
+
 

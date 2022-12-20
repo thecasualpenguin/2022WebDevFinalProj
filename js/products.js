@@ -1,3 +1,6 @@
+
+// --- functionality ---
+
 blocker = document.getElementsByClassName("blocker")[0];
 
 setTimeout(() => {
@@ -140,3 +143,71 @@ cameraData.forEach((data, index, array) => {
 
 	productContainer.appendChild(newProduct);
 });
+
+
+
+// --- dark mode ---
+
+toggleTheme = document.querySelector('#toggleTheme');
+
+// get all things to change
+let productGrid = document.querySelector('.product-grid');
+let productItems = document.querySelectorAll(".wsk-cp-product");
+let modal = document.querySelector('#modal2');
+let modalContainer = modal.querySelector('.modernTextContent')
+
+// change accordingly
+toggleTheme.addEventListener('change', (e) => {
+	if (localStorage.getItem("mode") == 'light') {
+		// if lightmode, change to dark
+		localStorage.setItem("mode", "dark");
+		document.body.classList.add("dark-mode");
+		productGrid.style.backgroundColor = "#515151";
+
+		for (item of productItems) {
+			item.style.backgroundColor = "#333";
+			item.style.color = "white";
+		}
+
+		modal.style.backgroundColor = "gray";
+		modalContainer.style.backgroundColor = "gray";
+
+		
+	} 
+	else {
+		// if darkmode, change to light
+		localStorage.setItem("mode", "light");
+		document.body.classList.remove("dark-mode");
+		productGrid.style.backgroundColor = "#ddd";
+		
+		for (item of productItems) {
+			item.style.backgroundColor = "#fff";
+			item.style.color = "#000";
+		}
+
+	}
+});
+
+
+// load last preference by default
+
+if (localStorage.getItem("mode") == null) {
+	localStorage.setItem("mode", "light");
+}
+if (localStorage.getItem("mode") == "dark") {
+	// so we must simulate a click on this toggle button when we are currently on "light" mode
+	document.getElementById("checkbox").checked = "True";
+	localStorage.setItem("mode", "light");
+	trigger(toggleTheme, "change");
+}
+
+
+
+
+
+
+
+
+
+
+

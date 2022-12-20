@@ -5,8 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="../stylesheets/products.css" />
-		<script src="../js/products.js" defer></script>
+		<link rel="stylesheet" href="../stylesheets/darkToggle.css" />
 		<script src="../js/validation.js" defer></script>
+		<script src="../js/products.js" defer></script>
 		<title>Sign Up Page</title>
 	</head>
 	<body>
@@ -16,6 +17,14 @@
 			href="../index.html"
 			>←Home</a
 		>
+
+		<div class="theme-switch-wrapper">
+			<label class="theme-switch" id="toggleTheme" for="checkbox">
+				<input type="checkbox" id="checkbox" />
+				<div class="slider round"></div>
+			</label>
+			<em id="toggleLabel">Toggle It!</em>
+		</div>
 
 		<h1 class="center">Welcome to the Product Warehouse</h1>
 		<h3 style="text-align: center">
@@ -33,17 +42,19 @@
 					<p>
 						Subscribe now to get immediate updates from this amazing website.
 					</p>
-					<form onsubmit="return false;">
+					<form id='signup-form' action="./confirmation.php" method="post">
 						<!-- would've been easier just to use build in form controls, but I'm a masochist. -->
-						<input id="nameInput" type="text" placeholder="John Smith" />
-						<input id="phoneInput" type="tel" placeholder="123-456-7890" />
+						<input id="nameInput" name="name" type="text" placeholder="John Smith" />
+						<input id="phoneInput" name="phone" type="tel" placeholder="123-456-7890" />
 						<input
 							id="emailInput"
+							name="email"
 							type="text"
 							placeholder="yourEmail@jhu.edu"
 						/>
-
-						<button id="subscribe" type="submit">
+						<!-- add fake indicator button -->
+						<input type="text" name="subscribe" value="submit" hidden> 
+						<button id="subscribe" type="submit" value="submit">
 							<div id="subscribe-text">Subscribe</div>
 						</button>
 					</form>
