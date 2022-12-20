@@ -155,6 +155,7 @@ let productGrid = document.querySelector('.product-grid');
 let productItems = document.querySelectorAll(".wsk-cp-product");
 let modal = document.querySelector('#modal2');
 let modalContainer = modal.querySelector('.modernTextContent')
+let modalCloseBtn = document.querySelector('#close2');
 
 // change accordingly
 toggleTheme.addEventListener('change', (e) => {
@@ -169,8 +170,10 @@ toggleTheme.addEventListener('change', (e) => {
 			item.style.color = "white";
 		}
 
-		modal.style.backgroundColor = "gray";
-		modalContainer.style.backgroundColor = "gray";
+		// modal.style.backgroundColor = "gray";
+		// modalContainer.style.backgroundColor = "gray";
+		modalContainer.style.color = "black";
+		modalCloseBtn.style.color = "black";
 
 		
 	} 

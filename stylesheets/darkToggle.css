@@ -76,6 +76,6 @@ input:checked + .slider:before {
 /* dark mode definition */
 
 .dark-mode {
-  background-color: #313131 !important;
-  color: white !important;
+  background-color: #313131;
+  color: white;
 }
